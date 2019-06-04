@@ -4,6 +4,7 @@ const challengesRouter = express.Router()
 const challengeController = require('./challenge.controller')
 const ChallengesService = require('./challenges-service')
 const jsonBodyParser = express.json()
+const path = require('path')
 
 challengesRouter
   .route('/all')
@@ -31,7 +32,7 @@ challengesRouter
   })
   .delete((req, res, next) => {
     ChallengesService.deletechallenge(req.app.get('db'), req.params.id)
-      .then(challenge => res.status(200))
+      .then(challenge => res.status(200).json({data: challenge}))
   })
 
 challengesRouter
@@ -39,19 +40,18 @@ challengesRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { name, description, points } = req.body
     const newChallenge = { name, description, points }
-    for (const [key, value] of Object.entries(newChallenge))
-      if (value == null)
-        return res.status(400).json({
-          error: `Missing '${key}' in request body`
-        })
+    console.log(req.body)
+    // for (const [key, value] of Object.entries(newChallenge))
+    //   if (value == null)
+    //     return res.status(400).json({
+    //       error: `Missing '${key}' in request body`
+    //     })
     ChallengesService.insertchallenge(req.app.get('db'), newChallenge)
     .then(challenge => {
-      res.status(201)
-      .location(path.posix.join(req.originalUrl, `/${challenge.id}`))
-          .json(ChallengesService.serializeChallenge(challenge))
+      res.status(201).json({data: challenge})
       })
       .catch(next)
     })
-  
+
 //export routes
 module.exports = challengesRouter

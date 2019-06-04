@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const ChallengesService = {
   getAllChallenges(knex) {
     return knex.select('*').from('challenges')
