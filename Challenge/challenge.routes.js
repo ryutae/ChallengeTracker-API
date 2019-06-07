@@ -35,6 +35,7 @@ challengesRouter
       .then(challenge => res.status(200).json({data: challenge}))
   })
 
+//client Admin only endpoint
 challengesRouter
   .route('/create')
   .post(jsonBodyParser, (req, res, next) => {
