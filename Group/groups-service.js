@@ -1,6 +1,10 @@
 const xss = require('xss')
 
 const GroupsService = {
+  getAllGroups(knex) {
+    return knex.select('*').from('groups')
+  },
+
   getAllGroupsForUser(knex, id) {
     return knex.select('*').from('groups')
     .innerjoin('groupUsersRef', 'groups.id', 'groupUsersRef.group_id')
@@ -18,7 +22,7 @@ const GroupsService = {
       })
   },
 
-  getById(knex, id) {
+  getGroupById(knex, id) {
     return knex
       .from('groups')
       .select('*')
