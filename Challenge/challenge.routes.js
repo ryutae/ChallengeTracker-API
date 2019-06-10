@@ -20,10 +20,22 @@ challengesRouter
   })
 
 challengesRouter
+  .route('/group/:group_id')
+  .get((req, res, next) => {
+    ChallengesService.getChallengesInGroup(req.app.get('db'), req.params.group_id)
+    .then(challenges => {
+      res.status(200).json({
+        data: challenges
+      })
+    })
+    .catch(next)
+  })
+
+challengesRouter
   .route('/one/:id')
   .get((req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ChallengesService.getById(knexInstance, req.params.id)
+    const knexInstance =
+    ChallengesService.getById(req.app.get('db'), req.params.id)
       .then(challenge => {
         res.status(200).json({
           data: challenge

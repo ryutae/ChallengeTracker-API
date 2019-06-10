@@ -29,6 +29,11 @@ const ChallengesService = {
       .delete()
   },
 
+  getChallengesInGroup(knex, group_id) {
+    return knex.select('*').from('challenges')
+    .where('gid', group_id)
+  },
+
   updatechallenge(knex, id, newchallengeFields) {
     return knex('challenges')
       .where({ id })
