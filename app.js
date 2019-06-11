@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const challengeRoutes = require('./Challenge/challenge.routes')
 const groupRoutes = require('./Group/group.routes')
+const authRoutes = require('./Auth/auth.routes')
 const bodyParser = require('body-parser')
 //create and config app
 const app = express()
@@ -21,6 +22,7 @@ app.use(bodyParser.json())
 //routes
 app.use('/challenge', challengeRoutes)
 app.use('/groups', groupRoutes)
+app.use('/auth', authRoutes)
 
 //error handling
 app.use(function errorHandler(error, req, res, next) {
