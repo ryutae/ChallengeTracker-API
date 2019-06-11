@@ -31,7 +31,7 @@ const ChallengesService = {
 
   getChallengesInGroup(knex, group_id) {
     return knex.select('*').from('challenges')
-    .where('gid', group_id)
+    .where('group_id', group_id)
   },
 
   updatechallenge(knex, id, newchallengeFields) {

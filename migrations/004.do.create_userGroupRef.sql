@@ -1,4 +1,4 @@
 CREATE TABLE UserGroupRef (
-    uid INTEGER,
-    gid INTEGER
+    user_id INTEGER,
+    group_id INTEGER
 );

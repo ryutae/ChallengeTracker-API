@@ -32,7 +32,7 @@ challengesRouter
   })
 
 challengesRouter
-  .route('/one/:id')
+  .route('/:id')
   .get((req, res, next) => {
     const knexInstance =
     ChallengesService.getById(req.app.get('db'), req.params.id)
@@ -51,8 +51,8 @@ challengesRouter
 challengesRouter
   .route('/create')
   .post(jsonBodyParser, (req, res, next) => {
-    const { name, description, points } = req.body
-    const newChallenge = { name, description, points }
+    const { group_id, name, description, points } = req.body
+    const newChallenge = { group_id, name, description, points }
     console.log(req.body)
     // for (const [key, value] of Object.entries(newChallenge))
     //   if (value == null)
