@@ -23,7 +23,7 @@ const ChallengesService = {
       .first()
   },
 
-  deletechallenge(knex, id) {
+  deleteChallenge(knex, id) {
     return knex('challenges')
       .where({ id })
       .delete()

@@ -32,10 +32,10 @@ challengesRouter
   })
 
 challengesRouter
-  .route('/:id')
+  .route('/:challenge_id')
   .get((req, res, next) => {
     const knexInstance =
-    ChallengesService.getById(req.app.get('db'), req.params.id)
+    ChallengesService.getById(req.app.get('db'), req.params.challenge_id)
       .then(challenge => {
         res.status(200).json({
           data: challenge
@@ -43,7 +43,7 @@ challengesRouter
       })
   })
   .delete((req, res, next) => {
-    ChallengesService.deletechallenge(req.app.get('db'), req.params.id)
+    ChallengesService.deleteChallenge(req.app.get('db'), req.params.challenge_id)
       .then(challenge => res.status(200).json({data: challenge}))
   })
 
