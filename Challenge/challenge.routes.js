@@ -5,6 +5,8 @@ const challengeController = require('./challenge.controller')
 const ChallengesService = require('./challenges-service')
 const jsonBodyParser = express.json()
 const path = require('path')
+const { requireAuth } = require('../middleware/jwt-auth')
+const GroupsService = require('../Group/groups-service')
 
 challengesRouter
   .route('/all')
@@ -21,6 +23,7 @@ challengesRouter
 
 challengesRouter
   .route('/group/:group_id')
+  .all(checkGroupExists)
   .get((req, res, next) => {
     ChallengesService.getChallengesInGroup(req.app.get('db'), req.params.group_id)
     .then(challenges => {
@@ -66,5 +69,24 @@ challengesRouter
       .catch(next)
     })
 
+/* async/await syntax for promises */
+async function checkGroupExists(req, res, next) {
+  try {
+    const group = await GroupsService.getGroupById(
+      req.app.get('db'),
+      req.params.group_id
+    )
+
+    if (!group)
+      return res.status(404).json({
+        error: `Group doesn't exist`
+      })
+
+    res.group = group
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
 //export routes
 module.exports = challengesRouter

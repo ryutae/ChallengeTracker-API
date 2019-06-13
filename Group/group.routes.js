@@ -5,6 +5,7 @@ const groupController = require('./group.controller')
 const GroupsService = require('./groups-service')
 const jsonBodyParser = express.json()
 const path = require('path')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 groupRoutes
   .route('/all')
@@ -19,10 +20,11 @@ groupRoutes
   })
 
 groupRoutes
-  .route('/:id')
+  .route('/:group_id')
+  .all(checkGroupExists)
   .get((req, res, next) => {
-    const { id } = req.params
-      GroupsService.getGroupById(req.app.get('db'), id)
+    const { group_id } = req.params
+      GroupsService.getGroupById(req.app.get('db'), group_id)
       .then(groups => {
         res.status(200).json({
           data: groups
@@ -52,6 +54,26 @@ groupRoutes
     })
     .catch(next)
   })
+
+  /* async/await syntax for promises */
+  async function checkGroupExists(req, res, next) {
+    try {
+      const group = await GroupsService.getGroupById(
+        req.app.get('db'),
+        req.params.group_id
+      )
+
+      if (!group)
+        return res.status(404).json({
+          error: `Group doesn't exist`
+        })
+
+      res.group = group
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
 
 //export routes
 module.exports = groupRoutes

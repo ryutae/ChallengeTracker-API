@@ -52,9 +52,9 @@ const AuthService = {
       date_created: new Date(user.date_created),
     }
   },
-  getUserWithEmail(db, email) {
+  getUserWithUserName(db, user_name) {
     return db('users')
-      .where({ email })
+      .where({ user_name })
       .first()
   },
   comparePasswords(password, hash) {
@@ -63,6 +63,7 @@ const AuthService = {
   createJwt(subject, payload) {
     return jwt.sign(payload, config.JWT_SECRET, {
       subject,
+      expiresIn: config.JWT_EXPIRY,
       algorithm: 'HS256',
     })
   },
