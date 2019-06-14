@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS UserGroupRef;
+DROP TABLE IF EXISTS userGroupRef;

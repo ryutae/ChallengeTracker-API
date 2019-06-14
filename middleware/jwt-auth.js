@@ -10,9 +10,10 @@ function requireAuth(req, res, next) {
     bearerToken = authToken.slice(7, authToken.length)
   }
 
-  try {
-    const payload = AuthService.verifyJwt(bearerToken)
 
+    const payload = AuthService.verifyJwt(bearerToken)
+    console.log('====================')
+    console.log(payload)
     AuthService.getUserWithUserName(
       req.app.get('db'),
       payload.sub,
@@ -28,9 +29,7 @@ function requireAuth(req, res, next) {
         console.error(err)
         next(err)
       })
-  } catch(error) {
-    res.status(401).json({ error: 'Unauthorized request' })
-  }
+  
 }
 
 module.exports = {

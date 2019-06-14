@@ -41,6 +41,32 @@ const GroupsService = {
       .where({ id })
       .update(newGroupFields)
   },
+
+  getUserGroup(knex, group_id, user_id) {
+    // return knex('usergroupref').select(1)
+    return knex('usergroupref').select('*')
+    .where({
+      user_id: user_id,
+      group_id: group_id
+    }).first()
+  },
+
+  insertUserGroupRef(knex, group_id, user_id) {
+    console.log(group_id)
+    return knex
+    .insert([
+      {user_id: user_id,
+       group_id: group_id,
+       points: 0
+     },
+    ])
+    .into('usergroupref')
+    .returning('*')
+    .then(rows => {
+      return rows[0]
+    })
+  },
+
   serializeChallenge(group) {
   const { user } = group
   return {

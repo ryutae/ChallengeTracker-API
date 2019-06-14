@@ -33,6 +33,23 @@ groupRoutes
       .catch(next)
   })
 
+  groupRoutes
+    .route('/join/:group_id')
+    .all(checkGroupExists)
+    .all(requireAuth)
+    .all(checkUserInGroup)
+    .post(requireAuth, jsonBodyParser, (req, res, next) => {
+      const group_id = parseInt(req.params.group_id)
+      const user_id = req.user.id
+        GroupsService.insertUserGroupRef(req.app.get('db'), group_id, user_id)
+        .then(userGroup => {
+          res.status(200).json({
+            data: userGroup
+          })
+        })
+        .catch(next)
+    })
+
 groupRoutes
   .route('/create')
   .post(jsonBodyParser, (req, res, next) => {
@@ -69,6 +86,28 @@ groupRoutes
         })
 
       res.group = group
+      next()
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async function checkUserInGroup(req, res, next) {
+    try {
+      console.log('=========user id ==========')
+      console.log(req.user)
+      const UserGroup = await GroupsService.getUserGroup(
+        req.app.get('db'),
+        req.params.group_id,
+        req.user.id
+      )
+
+      if (UserGroup)
+        return res.status(404).json({
+          error: `User is already in group`
+        })
+
+      res.data = UserGroup
       next()
     } catch (error) {
       next(error)
