@@ -39,6 +39,39 @@ const ChallengesService = {
       .where({ id })
       .update(newchallengeFields)
   },
+
+  insertCompletedChallenge(knex, challenge_id, user_id, points) {
+    return knex
+    .insert(
+      {user_id: user_id,
+      challenge_id: challenge_id,
+      points: points
+    })
+    .into('completedchallenge')
+    .returning('*')
+    .then(rows => {
+      return rows[0]
+    });
+  },
+
+  getUserGroupPointSum(knex, user_id, group_id) {
+    return knex('completedchallenge')
+    .sum('points')
+    .where({
+      user_id: user_id,
+      group_id: group_id
+    })
+  },
+
+  updateUserGroupRefPoints(knex, user_id, group_id) {
+    return knex('usergroupref')
+    .update({
+      user_id: user_id,
+      challenge_id: challenge_id,
+      points: points
+    })
+  },
+
   serializeChallenge(challenge) {
   const { user } = challenge
   return {

@@ -2,9 +2,10 @@
 const express = require('express')
 const helmet = require('helmet')
 const morgan = require('morgan')
-const challengeRoutes = require('./Challenge/challenge.routes')
-const groupRoutes = require('./Group/group.routes')
-const authRoutes = require('./Auth/auth.routes')
+const challengeRouter = require('./Challenge/challenge.routes')
+const groupRouter = require('./Group/group.routes')
+const userRouter = require('./User/user.routes')
+const authRouter = require('./Auth/auth.routes')
 const bodyParser = require('body-parser')
 //create and config app
 const app = express()
@@ -20,9 +21,10 @@ app.use(cors());
 app.use(bodyParser.json())
 
 //routes
-app.use('/challenge', challengeRoutes)
-app.use('/groups', groupRoutes)
-app.use('/auth', authRoutes)
+app.use('/challenge', challengeRouter)
+app.use('/groups', groupRouter)
+app.use('/auth', authRouter)
+app.use('/user', userRouter)
 
 //error handling
 app.use(function errorHandler(error, req, res, next) {

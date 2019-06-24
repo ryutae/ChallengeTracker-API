@@ -1,13 +1,13 @@
 // /challenge
 const express = require('express')
-const groupRoutes = express.Router()
+const groupRouter = express.Router()
 const groupController = require('./group.controller')
 const GroupsService = require('./groups-service')
 const jsonBodyParser = express.json()
 const path = require('path')
 const { requireAuth } = require('../middleware/jwt-auth')
 
-groupRoutes
+groupRouter
   .route('/all')
   .get((req, res, next) => {
       GroupsService.getAllGroups(req.app.get('db'))
@@ -19,7 +19,7 @@ groupRoutes
       .catch(next)
   })
 
-groupRoutes
+groupRouter
   .route('/:group_id')
   .all(checkGroupExists)
   .get((req, res, next) => {
@@ -33,7 +33,7 @@ groupRoutes
       .catch(next)
   })
 
-  groupRoutes
+  groupRouter
     .route('/join/:group_id')
     .all(checkGroupExists)
     .all(requireAuth)
@@ -50,7 +50,7 @@ groupRoutes
         .catch(next)
     })
 
-groupRoutes
+groupRouter
   .route('/create')
   .post(jsonBodyParser, (req, res, next) => {
     const { name, description } = req.body
@@ -115,4 +115,4 @@ groupRoutes
   }
 
 //export routes
-module.exports = groupRoutes
+module.exports = groupRouter

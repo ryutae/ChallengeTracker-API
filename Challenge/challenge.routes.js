@@ -69,6 +69,22 @@ challengesRouter
       .catch(next)
     })
 
+challengesRouter
+  .route('/complete/:challenge_id')
+  .post(requireAuth, (req, res, next) => {
+    const user_id = req.user.id
+    const challenge_id = parseInt(req.params.challenge_id)
+    ChallengesService.insertCompletedChallenge(req.app.get('db'), challenge_id, user_id, points)
+    .then(challenges => {
+      res.status(200).json({
+        data: challenge
+      })
+    })
+    .catch(next)
+  })
+
+
+
 /* async/await syntax for promises */
 async function checkGroupExists(req, res, next) {
   try {
