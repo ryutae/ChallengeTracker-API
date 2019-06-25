@@ -40,10 +40,11 @@ const ChallengesService = {
       .update(newchallengeFields)
   },
 
-  insertCompletedChallenge(knex, challenge_id, user_id, points) {
+  insertCompletedChallenge(knex, challenge_id, group_id, user_id, points) {
     return knex
     .insert(
       {user_id: user_id,
+      group_id: group_id,
       challenge_id: challenge_id,
       points: points
     })

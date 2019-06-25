@@ -74,8 +74,11 @@ challengesRouter
   .post(requireAuth, (req, res, next) => {
     const user_id = req.user.id
     const challenge_id = parseInt(req.params.challenge_id)
-    ChallengesService.insertCompletedChallenge(req.app.get('db'), challenge_id, user_id, points)
-    .then(challenges => {
+    const points = req.body.points
+    const group_id = req.body.group_id
+    console.log(`user_id: ${user_id}, challenge_id: ${challenge_id}, points: ${points}, group_id: ${group_id}`)
+    ChallengesService.insertCompletedChallenge(req.app.get('db'), challenge_id, user_id, group_id, points)
+    .then(challenge => {
       res.status(200).json({
         data: challenge
       })
