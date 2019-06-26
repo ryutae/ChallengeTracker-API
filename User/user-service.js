@@ -50,6 +50,36 @@ const UserService = {
     })
   },
 
+  getSumCompletedChallengesForUser(knex, group_id, user_id) {
+    console.log(group_id, user_id)
+    return knex('completedchallenge')
+    .sum('points')
+    .where({
+      user_id: user_id,
+      group_id: group_id
+    })
+    .then(rows => {
+      console.log(`SUM OF POINTS:`)
+      console.log(rows)
+      return rows[0].sum
+
+    })
+  },
+// TODO: fix this, it's not updating the points.
+  updateUserGroupRefPoints(knex, user_id, group_id, points) {
+  return knex('usergroupref')
+  .where({
+    user_id: user_id,
+    group_id: group_id
+  })
+  .update({points: points})
+  .then(rows => {
+    console.log('updateUserGroupRefPoints response:')
+  console.log(rows)
+    return rows
+  })
+  }
+
 }
 
 module.exports = UserService

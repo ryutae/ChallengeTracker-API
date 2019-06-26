@@ -65,13 +65,19 @@ const ChallengesService = {
   },
 
   updateUserGroupRefPoints(knex, user_id, group_id) {
-    return knex('usergroupref')
-    .update({
-      user_id: user_id,
-      challenge_id: challenge_id,
-      points: points
-    })
-  },
+  //   return knex('usergroupref')
+  //   .update({
+  //     points: points
+  //   })
+  //   .where({
+  //     user_id: user_id,
+  //     group_id: group_id
+  //   })
+  // }
+
+  return knex.raw(`update usergroupref set points = (select sum(points) from completedchallenge where user_id =${user_id} and group_id = ${group_id}) where user_id = ${user_id} and group_id = ${group_id}`)
+}
+  ,
 
   serializeChallenge(challenge) {
   const { user } = challenge
