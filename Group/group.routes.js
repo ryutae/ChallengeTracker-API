@@ -11,10 +11,8 @@ groupRouter
   .route('/all')
   .get((req, res, next) => {
       GroupsService.getAllGroups(req.app.get('db'))
-      .then(groups => {
-        res.status(200).json({
-          data: groups
-        })
+      .then(groupList => {
+        res.status(200).json(groupList)
       })
       .catch(next)
   })
@@ -31,6 +29,20 @@ groupRouter
         })
       })
       .catch(next)
+  })
+
+groupRouter
+  .route('/:group_id/allusers')
+  .all(checkGroupExists)
+  .get((req, res, next) => {
+    const { group_id } = req.params
+    GroupsService.getAllUsersInGroup(req.app.get('db'), group_id)
+    .then(users => {
+      res.status(200).json({
+        data: users
+      })
+    })
+    .catch(next)
   })
 
   groupRouter
@@ -52,9 +64,10 @@ groupRouter
 
 groupRouter
   .route('/create')
-  .post(jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { name, description } = req.body
-    const newGroup = { name, description }
+    const user_id = req.user.id
+    const newGroup = { name, description, user_id }
     for (const [key, value] of Object.entries(newGroup))
       if (value == null)
         return res.status(400).json({

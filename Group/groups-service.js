@@ -52,7 +52,6 @@ const GroupsService = {
   },
 
   insertUserGroupRef(knex, group_id, user_id) {
-    console.log(group_id)
     return knex
     .insert([
       {user_id: user_id,
@@ -65,6 +64,14 @@ const GroupsService = {
     .then(rows => {
       return rows[0]
     })
+  },
+
+  getAllUsersInGroup(knex, group_id) {
+    return knex('usergroupref')
+    .select('*')
+    .innerJoin('users', 'usergroupref.user_id', 'users.id')
+    .where('group_id', group_id)
+    .orderBy('points', 'desc')
   },
 
   serializeChallenge(group) {

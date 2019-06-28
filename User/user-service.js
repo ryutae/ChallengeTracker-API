@@ -74,8 +74,6 @@ const UserService = {
   })
   .update({points: points})
   .then(rows => {
-    console.log('updateUserGroupRefPoints response:')
-  console.log(rows)
     return rows
   })
   }
