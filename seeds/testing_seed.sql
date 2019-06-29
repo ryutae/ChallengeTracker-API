@@ -13,11 +13,9 @@ VALUES
 (3, 'run5', 'run 5 mile', 50),
 (4, 'run6', 'run 6 mile', 60);
 
-INSERT INTO groups (name, description)
+INSERT INTO groups (name, description, created_by)
 VALUES
-('Summer', 'Summer Challenge'),
-('Fall', 'Fall Challenge'),
-('Winter', 'Winter Challenge'),
-('Spring', 'Spring Challenge');
-
--- INSERT INTO users (full_name, user_name, email, password)
+('Summer', 'Summer Challenge', 1),
+('Fall', 'Fall Challenge', 1),
+('Winter', 'Winter Challenge', 1),
+('Spring', 'Spring Challenge', 1);

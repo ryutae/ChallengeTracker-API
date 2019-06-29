@@ -63,11 +63,13 @@ groupRouter
     })
 
 groupRouter
-  .route('/create')
+  .route('/create/new')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { name, description } = req.body
-    const user_id = req.user.id
-    const newGroup = { name, description, user_id }
+    const created_by = req.user.id
+    const newGroup = { name, description, created_by }
+    console.log('==========groups/new=============')
+    console.log(newGroup)
     for (const [key, value] of Object.entries(newGroup))
       if (value == null)
         return res.status(400).json({
