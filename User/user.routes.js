@@ -27,9 +27,7 @@ userRouter
     const user_id = req.user.id
       UserService.getUserGroupRef(req.app.get('db'), group_id, user_id)
       .then(user => {
-        res.status(200).json({
-          data: user
-        })
+        res.status(200).json(user)
       })
       .catch(next)
   })

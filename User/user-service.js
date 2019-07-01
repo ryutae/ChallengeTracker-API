@@ -27,7 +27,14 @@ const UserService = {
 
   getUserGroupRef(knex, group_id, user_id) {
     // return knex('usergroupref').select(1)
-    return knex('usergroupref').select('*')
+    return knex('usergroupref').innerJoin('users', 'usergroupref.user_id', 'users.id')
+    .select(
+      'usergroupref.group_id as group_id',
+      'usergroupref.points as points',
+      'users.id as user_id',
+      'users.full_name as full_name',
+      'users.user_name as user_name',
+      'users.email as email')
     .where({
       user_id: user_id,
       group_id: group_id
