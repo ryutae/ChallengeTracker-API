@@ -64,6 +64,36 @@ const ChallengesService = {
     })
   },
 
+  getCompletedChallengesByUser(knex, user_id, group_id) {
+    return knex('completedchallenge')
+    .innerJoin('challenges', 'completedchallenge.challenge_id', 'challenges.id')
+    .select(
+      'challenges.id as challenge_id',
+      'completedchallenge.user_id as user_id',
+      'completedchallenge.group_id as group_id',
+      'completedchallenge.date_completed as date_completed',
+      'completedchallenge.points as points',
+      'challenges.name as challenge_name',
+      'challenges.description as challenge_description'
+      )
+    .where({
+      'completedchallenge.user_id': user_id,
+      'completedchallenge.group_id': group_id
+    })
+    .orderBy('completedchallenge.date_completed')
+  },
+
+  getUncompletedChallengesByUser(knex, user_id, group_id) {
+    return knex.select('challenges.*').from('challenges')
+    .leftJoin('completedchallenge', function() {
+      this.on('challenges.id', '=','completedchallenge.challenge_id'  ).onIn('completedchallenge.user_id', user_id)
+    })
+    .where({
+      'challenges.group_id': group_id
+    })
+    .whereNull('completedchallenge.user_id')
+  },
+
   updateUserGroupRefPoints(knex, user_id, group_id) {
   //   return knex('usergroupref')
   //   .update({

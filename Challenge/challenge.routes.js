@@ -85,6 +85,28 @@ challengesRouter
     .catch(next)
   })
 
+challengesRouter
+  .route('/group/:group_id/completed')
+  .get(requireAuth, (req, res, next) => {
+    const user_id = req.user.id
+    const { group_id } = req.params
+    ChallengesService.getCompletedChallengesByUser(req.app.get('db'), user_id, group_id)
+    .then(challenges => {
+      res.status(200).json(challenges)
+    })
+  })
+
+challengesRouter
+  .route('/group/:group_id/uncompleted')
+  .get(requireAuth, (req, res, next) => {
+    const user_id = req.user.id
+    const { group_id } = req.params
+    ChallengesService.getUncompletedChallengesByUser(req.app.get('db'), user_id, group_id)
+    .then(challenges => {
+      res.status(200).json(challenges)
+    })
+  })
+
 
 /* async/await syntax for promises */
 async function checkGroupExists(req, res, next) {
