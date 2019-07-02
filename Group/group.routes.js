@@ -24,9 +24,7 @@ groupRouter
     const { group_id } = req.params
       GroupsService.getGroupById(req.app.get('db'), group_id)
       .then(groups => {
-        res.status(200).json({
-          data: groups
-        })
+        res.status(200).json(groups)
       })
       .catch(next)
   })

@@ -27,9 +27,7 @@ challengesRouter
   .get((req, res, next) => {
     ChallengesService.getChallengesInGroup(req.app.get('db'), req.params.group_id)
     .then(challenges => {
-      res.status(200).json({
-        data: challenges
-      })
+      res.status(200).json(challenges)
     })
     .catch(next)
   })
