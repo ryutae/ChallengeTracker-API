@@ -84,6 +84,23 @@ challengesRouter
     })
     .catch(next)
   })
+  .get(requireAuth, (req, res, next) => {
+    const user_id = req.user.id
+    const challenge_id = parseInt(req.params.challenge_id)
+    ChallengesService.checkChallengeCompleteByUser(req.app.get('db'), challenge_id, user_id)
+    .then(challenge => {
+      console.log(challenge)
+      if (challenge.length === 0) {
+        res.status(200).json({
+          challengeComplete: false
+        })
+      }
+      res.status(200).json({
+        challengeComplete: true
+      })
+    })
+    .catch(next)
+  })
 
 challengesRouter
   .route('/group/:group_id/completed')
