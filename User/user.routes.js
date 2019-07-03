@@ -56,16 +56,20 @@ userRouter
   .patch(requireAuth, (req, res, next) => {
     const user_id = req.user.id
     const group_id = req.body.group_id
-
+    let gpoints = 0
  UserService.getSumCompletedChallengesForUser(req.app.get('db'), group_id, user_id)
  .then(points => {
     console.log(`==============getSumCompletedChallengesForUser: ${points}==============`)
     console.log(points)
+    gpoints = points
     UserService.updateUserGroupRefPoints(req.app.get('db'), user_id, group_id, points)
   }
   )
-  .then
-    // UserService.updateUserGroupRefPoints(req.app.get('db'), user_id, group_id, points)
+  .then(response => {
+    console.log(response)
+    res.status(200).json({points: gpoints})
+  }
+  )
   })
 
   module.exports = userRouter
