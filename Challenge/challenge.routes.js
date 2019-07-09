@@ -7,6 +7,7 @@ const jsonBodyParser = express.json()
 const path = require('path')
 const { requireAuth } = require('../middleware/jwt-auth')
 const GroupsService = require('../Group/groups-service')
+const moment = require('moment')
 
 challengesRouter
   .route('/all')
@@ -92,11 +93,13 @@ challengesRouter
       console.log(challenge)
       if (challenge.length === 0) {
         res.status(200).json({
-          challengeComplete: false
+          challengeComplete: false,
+          date_completed: null
         })
       }
       res.status(200).json({
-        challengeComplete: true
+        challengeComplete: true,
+        date_completed: moment(challenge[0].date_completed).format("ddd, MMM D, YYYY")
       })
     })
     .catch(next)
