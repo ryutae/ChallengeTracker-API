@@ -69,6 +69,7 @@ const ChallengesService = {
     .innerJoin('challenges', 'completedchallenge.challenge_id', 'challenges.id')
     .select(
       'challenges.id as challenge_id',
+      'completedchallenge.id as id',
       'completedchallenge.user_id as user_id',
       'completedchallenge.group_id as group_id',
       'completedchallenge.date_completed as date_completed',
