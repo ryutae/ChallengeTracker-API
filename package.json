@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "migrate": "postgrator --config postgrator-config.js"
+    "migrate": "postgrator --config postgrator-config.js",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,9 @@
     "xss": "^1.0.6"
   },
   "devDependencies": {
-    "postgrator-cli": "^3.1.0"
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "postgrator-cli": "^3.1.0",
+    "supertest": "^4.0.2"
   }
 }

@@ -19,3 +19,12 @@ VALUES
 ('Fall', 'Fall Challenge', 1),
 ('Winter', 'Winter Challenge', 1),
 ('Spring', 'Spring Challenge', 1);
+
+INSERT INTO users (full_name, user_name, email, password)
+VALUES
+('Test User', 'test', 'test@test.com', 'P@ssw0rd');
+
+
+INSERT INTO userGroupRef (user_id, group_id, points)
+VALUES
+(1, 1, 0);

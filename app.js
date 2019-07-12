@@ -21,11 +21,14 @@ app.use(cors());
 app.use(bodyParser.json())
 
 //routes
-app.use('/challenge', challengeRouter)
-app.use('/groups', groupRouter)
-app.use('/auth', authRouter)
-app.use('/user', userRouter)
-
+app.use('/api/challenges', challengeRouter)
+app.use('/api/groups', groupRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
+app.get('/', (req, res) => {
+  res
+    .send('Hello Express!');
+});
 //error handling
 app.use(function errorHandler(error, req, res, next) {
    let response

@@ -7,6 +7,7 @@ const jsonBodyParser = express.json()
 const path = require('path')
 const { requireAuth } = require('../middleware/jwt-auth')
 
+//Gets list of all groups
 groupRouter
   .route('/all')
   .get((req, res, next) => {
@@ -17,6 +18,7 @@ groupRouter
       .catch(next)
   })
 
+//Get group info
 groupRouter
   .route('/:group_id')
   .all(checkGroupExists)
@@ -29,6 +31,7 @@ groupRouter
       .catch(next)
   })
 
+//Gets all users in the group
 groupRouter
   .route('/:group_id/allusers')
   .all(checkGroupExists)
@@ -43,31 +46,31 @@ groupRouter
     .catch(next)
   })
 
-  groupRouter
-    .route('/join/:group_id')
-    .all(checkGroupExists)
-    .all(requireAuth)
-    .all(checkUserInGroup)
-    .post(requireAuth, jsonBodyParser, (req, res, next) => {
-      const group_id = parseInt(req.params.group_id)
-      const user_id = req.user.id
-        GroupsService.insertUserGroupRef(req.app.get('db'), group_id, user_id)
-        .then(userGroup => {
-          res.status(200).json({
-            data: userGroup
-          })
+// POST: join the group
+groupRouter
+  .route('/join/:group_id')
+  .all(checkGroupExists)
+  .all(requireAuth)
+  .all(checkUserInGroup)
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    const group_id = parseInt(req.params.group_id)
+    const user_id = req.user.id
+      GroupsService.insertUserGroupRef(req.app.get('db'), group_id, user_id)
+      .then(userGroup => {
+        res.status(200).json({
+          data: userGroup
         })
-        .catch(next)
-    })
+      })
+      .catch(next)
+  })
 
+// POST: create new group
 groupRouter
   .route('/create/new')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { name, description } = req.body
     const created_by = req.user.id
     const newGroup = { name, description, created_by }
-    console.log('==========groups/new=============')
-    console.log(newGroup)
     for (const [key, value] of Object.entries(newGroup))
       if (value == null)
         return res.status(400).json({
@@ -107,8 +110,6 @@ groupRouter
 
   async function checkUserInGroup(req, res, next) {
     try {
-      console.log('=========user id ==========')
-      console.log(req.user)
       const UserGroup = await GroupsService.getUserGroup(
         req.app.get('db'),
         req.params.group_id,

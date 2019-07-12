@@ -6,6 +6,7 @@ const path = require('path')
 const UserService = require('../User/user-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 
+// GET: user info
 userRouter
   .route('/:user_id')
   .get((req, res, next) => {
@@ -19,6 +20,7 @@ userRouter
       .catch(next)
   })
 
+// GET: user info in the group
 userRouter
   .route('/group/:group_id')
   .all(requireAuth)
@@ -51,25 +53,21 @@ userRouter
       .catch(next)
   })
 
+// PATCH: update the points for the user in the group
 userRouter
   .route('/updatepoints')
   .patch(requireAuth, (req, res, next) => {
     const user_id = req.user.id
     const group_id = req.body.group_id
     let gpoints = 0
- UserService.getSumCompletedChallengesForUser(req.app.get('db'), group_id, user_id)
- .then(points => {
-    console.log(`==============getSumCompletedChallengesForUser: ${points}==============`)
-    console.log(points)
-    gpoints = points
-    UserService.updateUserGroupRefPoints(req.app.get('db'), user_id, group_id, points)
-  }
-  )
+    UserService.getSumCompletedChallengesForUser(req.app.get('db'), group_id, user_id)
+    .then(points => {
+      gpoints = points
+      UserService.updateUserGroupRefPoints(req.app.get('db'), user_id, group_id, points)
+    })
   .then(response => {
-    console.log(response)
     res.status(200).json({points: gpoints})
-  }
-  )
+  })
   })
 
   module.exports = userRouter

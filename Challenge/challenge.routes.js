@@ -9,6 +9,7 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const GroupsService = require('../Group/groups-service')
 const moment = require('moment')
 
+// Returns all challenges
 challengesRouter
   .route('/all')
   .get((req, res, next) => {
@@ -22,6 +23,7 @@ challengesRouter
       .catch(next)
   })
 
+// Gets challenges within group
 challengesRouter
   .route('/group/:group_id')
   .all(checkGroupExists)
@@ -33,6 +35,7 @@ challengesRouter
     .catch(next)
   })
 
+// Gets challenge info, DELETE: deletes challenge
 challengesRouter
   .route('/:challenge_id')
   .get((req, res, next) => {
@@ -49,18 +52,12 @@ challengesRouter
       .then(challenge => res.status(200).json({data: challenge}))
   })
 
-//client Admin only endpoint
+//Create Challenge endpoint
 challengesRouter
   .route('/create')
   .post(jsonBodyParser, (req, res, next) => {
     const { group_id, name, description, points } = req.body
     const newChallenge = { group_id, name, description, points }
-    console.log(req.body)
-    // for (const [key, value] of Object.entries(newChallenge))
-    //   if (value == null)
-    //     return res.status(400).json({
-    //       error: `Missing '${key}' in request body`
-    //     })
     ChallengesService.insertchallenge(req.app.get('db'), newChallenge)
     .then(challenge => {
       res.status(201).json({data: challenge})
@@ -68,6 +65,7 @@ challengesRouter
       .catch(next)
     })
 
+//POST: post challenge to completedchallenge
 challengesRouter
   .route('/complete/:challenge_id')
   .post(requireAuth, (req, res, next) => {
@@ -76,7 +74,6 @@ challengesRouter
     const challenge_id = parseInt(req.params.challenge_id)
     const points = req.body.points
     const group_id = req.body.group_id
-    console.log(`user_id: ${user_id}, challenge_id: ${challenge_id}, points: ${points}, group_id: ${group_id}`)
     ChallengesService.insertCompletedChallenge(req.app.get('db'), challenge_id, group_id, user_id, points)
     .then(challenge => {
       res.status(200).json({
@@ -85,12 +82,12 @@ challengesRouter
     })
     .catch(next)
   })
+  //GET:Check if the challenge has already been completed by user
   .get(requireAuth, (req, res, next) => {
     const user_id = req.user.id
     const challenge_id = parseInt(req.params.challenge_id)
     ChallengesService.checkChallengeCompleteByUser(req.app.get('db'), challenge_id, user_id)
     .then(challenge => {
-      console.log(challenge)
       if (challenge.length === 0) {
         res.status(200).json({
           challengeComplete: false,
@@ -105,6 +102,7 @@ challengesRouter
     .catch(next)
   })
 
+//Gets completed challenges by user
 challengesRouter
   .route('/group/:group_id/completed')
   .get(requireAuth, (req, res, next) => {
@@ -116,6 +114,7 @@ challengesRouter
     })
   })
 
+//Gets uncompleted challenges by user
 challengesRouter
   .route('/group/:group_id/uncompleted')
   .get(requireAuth, (req, res, next) => {

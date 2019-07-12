@@ -42,7 +42,6 @@ const UserService = {
   },
 
   insertUserGroupRef(knex, group_id, user_id) {
-    console.log(group_id)
     return knex
     .insert([
       {user_id: user_id,
@@ -58,7 +57,6 @@ const UserService = {
   },
 
   getSumCompletedChallengesForUser(knex, group_id, user_id) {
-    console.log(group_id, user_id)
     return knex('completedchallenge')
     .sum('points')
     .where({
@@ -66,8 +64,6 @@ const UserService = {
       group_id: group_id
     })
     .then(rows => {
-      console.log(`SUM OF POINTS:`)
-      console.log(rows)
       return rows[0].sum
 
     })

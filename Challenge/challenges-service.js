@@ -95,20 +95,6 @@ const ChallengesService = {
     .whereNull('completedchallenge.user_id')
   },
 
-  updateUserGroupRefPoints(knex, user_id, group_id) {
-  //   return knex('usergroupref')
-  //   .update({
-  //     points: points
-  //   })
-  //   .where({
-  //     user_id: user_id,
-  //     group_id: group_id
-  //   })
-  // }
-
-  return knex.raw(`update usergroupref set points = (select sum(points) from completedchallenge where user_id =${user_id} and group_id = ${group_id}) where user_id = ${user_id} and group_id = ${group_id}`)
-  },
-
   checkChallengeCompleteByUser(knex, challenge_id, user_id) {
     return knex('completedchallenge')
     .select('*')
