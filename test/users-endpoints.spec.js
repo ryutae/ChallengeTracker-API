@@ -2,9 +2,8 @@ const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../app')
 const request = require('supertest')
-const helpers = require('./test-helpers')
 
-describe('/challenge endpoint', function() {
+describe.only('Users Endpoints', function() {
   let db
 
   before('make knex instance', () => {
@@ -21,7 +20,8 @@ describe('/challenge endpoint', function() {
 
   afterEach('cleanup',() => db.raw('TRUNCATE challenges, users, groups RESTART IDENTITY CASCADE'))
 
-  context('Given there are challenges in the database', () => {
+
+  context('Given there are groups in the database', () => {
     const testUsers = [
       {
         id: 1,
@@ -109,39 +109,12 @@ describe('/challenge endpoint', function() {
      .insert(testChallenges)
      })
 
-  it('GET /api/challenges/all should return status 200', () => {
-   return request(app)
-     .get('/api/challenges/all')
-     .expect(200)
-  })
-  it('GET /api/challenges/:id should return status 200', () => {
-    return request(app)
-      .get('/api/challenges/1')
-      .expect(200)
-  })
-  it('DELETE /api/challenges/:id should return status 204', () => {
-    return request(app)
-      .delete('/api/challenges/1')
-      .expect(204)
-  })
-  it('GET /api/challenges/group/:group_id should return status 200', () => {
-    return request(app)
-      .get('/api/challenges/group/1')
-      .expect(200)
-  })
-  // it('POST /api/challenges/create should return status 201', () => {
-  //   return request(app)
-  //     .post('/api/challenges/create')
-  //     .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-  //     .send({
-  //       group_id: 1,
-  //       name: 'new challenge',
-  //       description: 'new',
-  //       points: 1
-  //     })
-  //     .expect(201)
-  // })
+   it('GET /api/users/:id should return status 200', () => {
+     return request(app)
+       .get('/api/users/1')
+       .expect(200)
+   })
 
 
+    })
   })
-})

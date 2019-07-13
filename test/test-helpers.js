@@ -100,13 +100,13 @@ function cleanTables(db) {
         trx.raw(`ALTER SEQUENCE users_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE groups_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE challenges_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`ALTER SEQUENCE usergroupref_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`ALTER SEQUENCE completedchallenge_id_seq minvalue 0 START WITH 1`),
+        // trx.raw(`ALTER SEQUENCE usergroupref_id_seq minvalue 0 START WITH 1`),
+        // trx.raw(`ALTER SEQUENCE completedchallenge_id_seq minvalue 0 START WITH 1`),
         trx.raw(`SELECT setval('users_id_seq', 0)`),
         trx.raw(`SELECT setval('groups_id_seq', 0)`),
         trx.raw(`SELECT setval('challenges_id_seq', 0)`),
-        trx.raw(`SELECT setval('usergroupref_id_seq', 0)`),
-        trx.raw(`SELECT setval('completedchallenge_id_seq', 0)`),
+        // trx.raw(`SELECT setval('usergroupref_id_seq', 0)`),
+        // trx.raw(`SELECT setval('completedchallenge_id_seq', 0)`),
       ])
     )
   )

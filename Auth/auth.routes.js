@@ -1,4 +1,3 @@
-// /challenge
 const express = require('express')
 const authRouter = express.Router()
 const AuthService = require('./auth-service')

@@ -7,17 +7,19 @@ const groupRouter = require('./Group/group.routes')
 const userRouter = require('./User/user.routes')
 const authRouter = require('./Auth/auth.routes')
 const bodyParser = require('body-parser')
+require('dotenv').config()
 //create and config app
 const app = express()
 const cors = require('cors');
 const knex = require('knex')
-const { NODE_ENV, DB_URL } = require('./config')
+const { NODE_ENV } = require('./config')
+const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common'
+const {CLIENT_ORIGIN} = require('./config');
 
 //middleware
 app.use(helmet())
-app.use(morgan('dev'))
-app.use(cors());
-
+app.use(morgan(morganSetting))
+app.use(cors())
 app.use(bodyParser.json())
 
 //routes

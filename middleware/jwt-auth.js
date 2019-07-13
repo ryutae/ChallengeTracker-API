@@ -1,6 +1,5 @@
-const AuthService = require('../Auth/auth-service')
+const AuthService = require('../auth/auth-service')
 
-// Checks Authorization using jwt
 function requireAuth(req, res, next) {
   const authToken = req.get('Authorization') || ''
 
@@ -11,7 +10,9 @@ function requireAuth(req, res, next) {
     bearerToken = authToken.slice(7, authToken.length)
   }
 
+  try {
     const payload = AuthService.verifyJwt(bearerToken)
+
     AuthService.getUserWithUserName(
       req.app.get('db'),
       payload.sub,
@@ -27,6 +28,9 @@ function requireAuth(req, res, next) {
         console.error(err)
         next(err)
       })
+  } catch(error) {
+    res.status(401).json({ error: 'Unauthorized request' })
+  }
 }
 
 module.exports = {

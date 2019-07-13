@@ -3,7 +3,7 @@ const knex = require('knex')
 const app = require('../app')
 const request = require('supertest')
 
-describe('Group Endpoints', function() {
+describe.only('Group Endpoints', function() {
   let db
 
   before('make knex instance', () => {
@@ -109,9 +109,21 @@ describe('Group Endpoints', function() {
      .insert(testChallenges)
      })
 
-   it('GET /groups/all should return status 200', () => {
+   it('GET /api/groups/all should return status 200', () => {
      return request(app)
-       .get('/groups/all')
+       .get('/api/groups/all')
+       .expect(200)
+   })
+
+   it('GET /api/groups/:id should return status 200', () => {
+     return request(app)
+       .get('/api/groups/1')
+       .expect(200)
+   })
+
+   it('GET /api/groups/:id/allusers should return status 200', () => {
+     return request(app)
+       .get('/api/groups/1/allusers')
        .expect(200)
    })
 

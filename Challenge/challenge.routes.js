@@ -49,13 +49,13 @@ challengesRouter
   })
   .delete((req, res, next) => {
     ChallengesService.deleteChallenge(req.app.get('db'), req.params.challenge_id)
-      .then(challenge => res.status(200).json({data: challenge}))
+      .then(challenge => res.status(204).json({data: challenge}))
   })
 
 //Create Challenge endpoint
 challengesRouter
   .route('/create')
-  .post(jsonBodyParser, (req, res, next) => {
+  .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { group_id, name, description, points } = req.body
     const newChallenge = { group_id, name, description, points }
     ChallengesService.insertchallenge(req.app.get('db'), newChallenge)
