@@ -47,12 +47,12 @@ challengesRouter
         })
       })
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     ChallengesService.deleteChallenge(req.app.get('db'), req.params.challenge_id)
       .then(challenge => res.status(204).json({data: challenge}))
   })
 
-//Create Challenge endpoint
+//Create Challenge 
 challengesRouter
   .route('/create')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
