@@ -93,6 +93,7 @@ challengesRouter
           challengeComplete: false,
           date_completed: null
         })
+        return
       }
       res.status(200).json({
         challengeComplete: true,

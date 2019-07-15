@@ -57,6 +57,7 @@ userRouter
 userRouter
   .route('/updatepoints')
   .patch(requireAuth, (req, res, next) => {
+    console.log(`=========updating points===========`)
     const user_id = req.user.id
     const group_id = req.body.group_id
     let gpoints = 0
