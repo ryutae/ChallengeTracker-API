@@ -7,8 +7,8 @@ const GroupsService = {
 
   getAllGroupsForUser(knex, id) {
     return knex.select('*').from('groups')
-    .innerjoin('UserGroupRef', 'groups.id', 'UserGroupRef.gid')
-    .innerjoin('users', 'UserGroupRef.uid', 'users.id')
+    .innerJoin('UserGroupRef', 'groups.id', 'UserGroupRef.gid')
+    .innerJoin('users', 'UserGroupRef.uid', 'users.id')
     .where('users.id', id)
   },
 
